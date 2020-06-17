@@ -1,7 +1,11 @@
 # easBrowseSharefile
 Use to browse the share file by eas(Exchange Server ActiveSync)
 
-Reference:https://github.com/FSecureLABS/peas
+Reference:
+
+https://github.com/FSecureLABS/peas
+
+https://github.com/solbirn/pyActiveSync
 
 Usage:
 
