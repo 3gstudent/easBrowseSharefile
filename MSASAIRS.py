@@ -19,16 +19,20 @@
 
 """[MS-ASAIRS] AirSyncBase namespace objects"""
 
+
+
 class airsyncbase_Type:             #http://msdn.microsoft.com/en-us/library/hh475675(v=exchg.80).aspx
     Plaintext = 1
     HTML =      2
     RTF =       3
     MIME =      4
 
+
 class airsyncbase_NativeBodyType:   #http://msdn.microsoft.com/en-us/library/ee218276(v=exchg.80).aspx
     Plaintext = 1
     HTML =      2
     RTF =       3
+
 
 class airsyncbase_Method:   #http://msdn.microsoft.com/en-us/library/ee160322(v=exchg.80).aspx
     Normal_attachment = 1   #Regular attachment
@@ -38,14 +42,17 @@ class airsyncbase_Method:   #http://msdn.microsoft.com/en-us/library/ee160322(v=
     Embedded_message =  5   #Email with .eml extension
     Attach_OLE =        6   #OLE such as inline image
 
+
 class airsyncbase_BodyPart_status:
     Success =   1
     Too_long =  176
+
 
 class airsync_MIMESupport:
     Never =     0
     SMIMEOnly = 1
     Always =    2
+
 
 class airsync_Class:
     Email =     "Email"
@@ -54,6 +61,7 @@ class airsync_Class:
     Tasks =     "Tasks"
     Notes =     "Notes"
     SMS =       "SMS"
+
 
 class airsync_FilterType:    #  Email | Calendar | Tasks
     NoFilter =          "0"  #    Y   |    Y     |   Y
@@ -66,9 +74,11 @@ class airsync_FilterType:    #  Email | Calendar | Tasks
     SixMonths =         "7"  #    N   |    Y     |   N
     IncompleteTasks =   "8"  #    N   |    N     |   Y
 
+
 class airsync_Conflict:
     ClientReplacesServer = 0
     ServerReplacesClient = 1
+
 
 class airsync_MIMETruncation:
     TruncateAll =       0
@@ -80,6 +90,7 @@ class airsync_MIMETruncation:
     Over51200chars =    6
     Over102400chars =   7
     TruncateNone =      8
+
 
 class airsyncbase_Body(object):
     def __init__(self):#, type, estimated_data_size=None, truncated=None, data=None, part=None, preview=None):
@@ -104,14 +115,16 @@ class airsyncbase_Body(object):
                 self.airsyncbase_Part = element.text
             elif element.tag == "airsyncbase:Preview":
                 self.airsyncbase_Preview = element.text
+
     def marshal(self):
         import base64
         return "%s//%s//%s//%s//%s//%s" % (repr(self.airsyncbase_Type), repr(self.airsyncbase_EstimatedDataSize), repr(self.airsyncbase_Truncated), base64.b64encode(self.airsyncbase_Data), repr(self.airsyncbase_Part), repr(self.airsyncbase_Preview))
+
     def __repr__(self):
         return self.marshal()
 
 class airsyncbase_BodyPart(object):
-    def __init__(self):
+    def __init__(self, estimated_data_size=None, truncated=None, data=None, part=None, preview=None):
         self.airsyncbase_BodyPart_status = airsyncbase_BodyPart_status.Too_long #Required. Byte. See airsyncbase_BodyPart_status enum.
         self.airsyncbase_Type = airsyncbase_Type.HTML               #Required. Integer. Max 1. See "MSASAIRS.Type" enum. 
         self.airsyncbase_EstimatedDataSize = estimated_data_size    #Optional. Integer. Max 1. Estimated data size before content filtering rules. http://msdn.microsoft.com/en-us/library/hh475714(v=exchg.80).aspx
@@ -119,6 +132,7 @@ class airsyncbase_BodyPart(object):
         self.airsyncbase_Data = data                                #Optional. String (formated as per Type; RTF is base64 string). http://msdn.microsoft.com/en-us/library/ee202985(v=exchg.80).aspx
         self.airsyncbase_Part = part                                #Optional. Integer. See "MSASCMD.Part". Only present in multipart "MSASCMD.ItemsOperations" response. http://msdn.microsoft.com/en-us/library/hh369854(v=exchg.80).aspx
         self.airsyncbase_Preview = preview                          #Optional. String (unicode). Plaintext preview message. http://msdn.microsoft.com/en-us/library/ff849891(v=exchg.80).aspx
+
     def parse(self, imwapxml_airsyncbase_BodyPart):
         bodypart_elements = imwapxml_airsyncbase_BodyPart.get_children()
         for element in bodypart_elements:
@@ -185,8 +199,3 @@ class airsyncbase_Attachments:
             new_attachment.parse(attachment)
             attachments.append(new_attachment)
         return attachments
-
-
-
-
-    
