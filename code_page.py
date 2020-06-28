@@ -33,9 +33,9 @@ class code_page(object):
 
     def get(self, t, token_or_tag):
         if t == 0:
-            return get_token(token_or_tag)
+            return self.get_token(token_or_tag)
         elif t == 1:
-            return get_tag(token_or_tag)
+            return self.get_tag(token_or_tag)
 
     def get_token(self, tag):
         return self.tokens[tag]
